@@ -3,10 +3,17 @@ import { Module } from '@nestjs/common';
 import { FirebaseModule } from 'lib/common/src';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
+import { PassportModule } from '@nestjs/passport';
+import { FirebaseAuthStrategy } from './firebase-auth.strategy';
 
 @Module({
-  imports: [FirebaseModule, HttpModule],
+  imports: [
+    FirebaseModule,
+    HttpModule,
+    PassportModule.register({ defaultStrategy: 'firebase-jwt' }),
+  ],
   controllers: [AuthController],
-  providers: [AuthService],
+  providers: [AuthService, FirebaseAuthStrategy],
+  exports: [PassportModule],
 })
 export class AuthModule {}
