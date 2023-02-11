@@ -12,6 +12,10 @@ export class FirebaseAuthStrategy extends PassportStrategy(Strategy) {
   }
 
   async validate(token: string) {
+    if (token === 'undefined') {
+      throw new UnauthorizedException();
+    }
+
     const decodedToken = await this.firebaseService
       .getAuth()
       .verifyIdToken(token);
